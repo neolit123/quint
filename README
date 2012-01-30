@@ -1,1 +1,20 @@
+Instructions
 
+1. You need Qt5 for desktop or device. See http://qt-project.org
+2. Build with qmake
+3. Run "quint" making sure qml files are in same directory
+
+In-env instructions are in the HelloWorld.qml first shown.
+
+When you exit, the env will save the last valid program into 
+Scratchpad.qml and reload that next time it is run.
+
+Still to-do:
+1. Show QML parsing, runtime and Shader compilation errors
+2. Track down Qt5 bugs that cause crashes when compiling half finished programs
+3. Better saving system
+
+Raspberry.png and MiniRaspberry.png from Raspberry image from: http://www.flickr.com/photos/77682540@N00/2580995645/
+qt.png from Nokia/qt-project
+
+Project hosted at https://gitorious.org/quint/quint

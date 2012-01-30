@@ -17,9 +17,10 @@ ShaderEffect {
             float x = p.x*can-p.y*san;
             float y = p.x*san+p.y*can;
             float recipabsy = 1.0/abs(y);
-            uv.x = 10.0*x*recipabsy;
-            uv.y = 5.0*time + 10.0*recipabsy;
-            highp vec4 wallcol = vec4(1.0,1.0,1.0,1.0);
-            gl_FragColor = vec4(wallcol.xyz * y*y, wallcol.a);
+            uv.x = 1.0*x*recipabsy;
+            uv.y = 1.0*time + 1.0*recipabsy;
+            lowp vec4 wallcol = texture2D(r,uv);
+            lowp vec4 c2 = texture2D(q,vec2(x,y));
+            gl_FragColor = mix(vec4(wallcol.xyz * y*y, wallcol.a*y*y),c2,c2.a);
         }"
 }

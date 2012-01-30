@@ -1,142 +1,157 @@
+/*
+quint: quint.qml
+
+Copyright (C) 2012 Andrew Baldwin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 import QtQuick 2.0
 
 Rectangle {
-        // Default window size, can be resized by user or fullscreening
-        width: 1280
-        height: 720
-        color: "white"
+    // Default window size, can be resized by user or fullscreening
+    width: 1280
+    height: 720
+    color: "white"
 
-        // Here should be whatever the user has made
-        Item {
-            id: tester
-            anchors.fill: parent
-            property string program: editor.text
-            property variant item
-            onProgramChanged: createTimer.restart()
-            Timer {
-                id: createTimer
-                interval: 1000
-                running: true
-                onTriggered: {
-                    var newItem = Qt.createQmlObject("import QtQuick 2.0\n"+tester.program,tester, "testee");
-                    if (newItem) {
-                        newItem.anchors.fill = tester;
-                        if (tester.item) {
-                            tester.item.destroy();
-                        }
-                        tester.item = newItem;
-                        // Good pgoram, so save it for posterity
-                        codemodel.program = tester.program;
+    // Here should be whatever the user has made
+    Item {
+        id: tester
+        anchors.fill: parent
+        property string program: editor.text
+        property variant item
+        onProgramChanged: createTimer.restart()
+        Timer {
+            id: createTimer
+            interval: 1000
+            running: true
+            onTriggered: {
+                var newItem = Qt.createQmlObject("import QtQuick 2.0\n"+tester.program,tester, "testee");
+                if (newItem) {
+                    newItem.anchors.fill = tester;
+                    if (tester.item) {
+                        tester.item.destroy();
                     }
+                    tester.item = newItem;
+                    // Good program, so save it for posterity
+                    codemodel.program = tester.program;
                 }
-            }
-            ShaderEffectSource {
-                id: rasp
-                smooth: true
-                sourceItem: Image { source:"Raspberry.png"; smooth: true; }
-                wrapMode: ShaderEffectSource.Repeat
-                mipmap: true
-            }
-            ShaderEffectSource {
-                id: minirasp
-                smooth: true
-                sourceItem: Image { source:"MiniRaspberry.png"; smooth: true; }
-                wrapMode: ShaderEffectSource.Repeat
-                //mipmap: true
-            }
-            ShaderEffectSource {
-                id: qtlogo
-                smooth: true
-                sourceItem: Image { source:"qt.png"; smooth: true; }
-                wrapMode: ShaderEffectSource.Repeat
-                //mipmap: true
-            }
-            ShaderEffectSource {
-                id: charimg
-                smooth: true
-                sourceItem: Image { source:"char_65.png"; smooth: true; }
-                //wrapMode: ShaderEffectSource.Repeat
-                //mipmap: true
-            }
-            property real time
-            NumberAnimation on time { from:0;to:100;duration:100000;loops:Animation.Infinite;running:true}
-        }
-        /*
-        // Quit button
-        Rectangle {
-            anchors.left: parent.left
-            anchors.top: parent.top
-            width: 30
-            height: 30
-            color: "Grey"
-            opacity: 0.5
-            Text {
-                anchors.centerIn: parent
-                color: "white"
-                text: "X"
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: Qt.quit()
             }
         }
-        */
-        // Here's the code editor
-        Rectangle {
-            id: editorParent
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width
-            height: parent.height*0.66
-            focus: true
-            color: "#7F000000"
-            opacity: 1.0
-            Behavior on opacity { NumberAnimation { duration: 200 } }
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Return) {
-                    codemodel.publish();
-                } else if (event.key == Qt.Key_Escape) {
-                    Qt.quit(); // Tired of using the mouse to quit
-                } else if (event.key == Qt.Key_F1) {
-                    opacity = (opacity==1.0)?0.0:1.0;
-                } else if (event.key == Qt.Key_F2) {
-                    editor.fontScale *= 1.1;
-                } else if (event.key == Qt.Key_F3) {
-                    editor.fontScale /= 1.1;
-                } else if (event.key == Qt.Key_F5) {
-                    editor.text = codemodel.list[0];
-                } else if (event.key == Qt.Key_F6) {
-                    editor.text = codemodel.list[1];
-                } else if (event.key == Qt.Key_F7) {
-                    editor.text = codemodel.list[2];
-                } else if (event.key == Qt.Key_F8) {
-                    editor.text = codemodel.list[3];
-                }
-
-                console.log(event.key,event.modifiers);
+        ShaderEffectSource {
+            id: rasp
+            smooth: true
+            sourceItem: Image { source:"Raspberry.png"; smooth: true; }
+            wrapMode: ShaderEffectSource.Repeat
+            mipmap: true
+        }
+        ShaderEffectSource {
+            id: minirasp
+            smooth: true
+            sourceItem: Image { source:"MiniRaspberry.png"; smooth: true; }
+            wrapMode: ShaderEffectSource.Repeat
+            //mipmap: true
+        }
+        ShaderEffectSource {
+            id: qtlogo
+            smooth: true
+            sourceItem: Image { source:"qt.png"; smooth: true; }
+            wrapMode: ShaderEffectSource.Repeat
+            //mipmap: true
+        }
+        property real time
+        NumberAnimation on time { from:0;to:100;duration:100000;loops:Animation.Infinite;running:true}
+    }
+    // Quit button
+    Rectangle {
+        anchors.right: parent.right
+        anchors.top: parent.top
+        width: 30
+        height: 30
+        color: "Grey"
+        opacity: 0.5
+        Text {
+            anchors.centerIn: parent
+            color: "white"
+            text: "X"
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: Qt.quit()
+        }
+    }
+    // Here's the code editor
+    Rectangle {
+        id: editorParent
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        width: parent.width
+        height: parent.height*0.66
+        focus: true
+        color: "#7F000000"
+        opacity: 1.0
+        Behavior on opacity { NumberAnimation { duration: 200 } }
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Return) {
+                codemodel.publish();
+            } else if (event.key == Qt.Key_Escape) {
+                Qt.quit(); // Tired of using the mouse to quit
+            } else if (event.key == Qt.Key_F1) {
+                opacity = (opacity==1.0)?0.0:1.0;
+            } else if (event.key == Qt.Key_F2) {
+                editor.fontScale *= 1.1;
+            } else if (event.key == Qt.Key_F3) {
+                editor.fontScale /= 1.1;
+            } else if (event.key == Qt.Key_F5) {
+                editor.text = codemodel.list[1];
+            } else if (event.key == Qt.Key_F6) {
+                editor.text = codemodel.list[2];
+            } else if (event.key == Qt.Key_F7) {
+                editor.text = codemodel.list[3];
+            } else if (event.key == Qt.Key_F8) {
+                editor.text = codemodel.list[4];
             }
 
-            Flickable {
-                id: flick
+            //console.log(event.key,event.modifiers);
+        }
 
-                anchors.fill: parent
-                anchors.leftMargin: 20
-                contentWidth: editor.paintedWidth
-                contentHeight: editor.paintedHeight
+        Flickable {
+            id: flick
 
-                function ensureVisible(r)
-                {
-                    if (contentX >= r.x)
-                        contentX = r.x;
-                    else if (contentX+width <= r.x+r.width)
-                        contentX = r.x+r.width-width;
-                    if (contentY >= r.y)
-                        contentY = r.y;
-                    else if (contentY+height <= r.y+r.height)
-                        contentY = r.y+r.height-height;
-                }
+            anchors.fill: parent
+            anchors.leftMargin: 20
+            contentWidth: editor.paintedWidth
+            contentHeight: editor.paintedHeight
 
-                TextEdit {
+            function ensureVisible(r)
+            {
+                if (contentX >= r.x)
+                    contentX = r.x;
+                else if (contentX+width <= r.x+r.width)
+                    contentX = r.x+r.width-width;
+                if (contentY >= r.y)
+                    contentY = r.y;
+                else if (contentY+height <= r.y+r.height)
+                    contentY = r.y+r.height-height;
+            }
+
+            TextEdit {
                 id: editor
                 text: codemodel.list[0]
 
@@ -172,6 +187,8 @@ Rectangle {
         }
     }
     ShaderEffect {
+        // This is the mouse cursor
+        // Needed on Raspberry Pi when you have no desktop environment
         id: mousecursor
         width: 21
         height: 21

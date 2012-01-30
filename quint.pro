@@ -7,6 +7,8 @@ SOURCES += main.cpp \
     quintview.cpp
 
 OTHER_FILES += \
+    quint.qml \
+    HelloWorld.qml \
     Fly.qml \
     Julia.qml \
     Raspberry.qml 
