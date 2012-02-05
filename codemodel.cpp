@@ -33,6 +33,7 @@ CodeModel::CodeModel() {
     f.setFileName("Raspberry.qml"); f.open(QIODevice::ReadOnly); m_program << f.readAll(); f.close();
     f.setFileName("Julia.qml"); f.open(QIODevice::ReadOnly); m_program << f.readAll(); f.close();
     f.setFileName("Fly.qml"); f.open(QIODevice::ReadOnly); m_program << f.readAll(); f.close();
+    f.setFileName("VideoFx.qml"); f.open(QIODevice::ReadOnly); m_program << f.readAll(); f.close();
 }
 
 void CodeModel::setProgram(QString program)

@@ -20,7 +20,6 @@ ShaderEffect {
             uv.x = 1.0*x*recipabsy;
             uv.y = 1.0*time + 1.0*recipabsy;
             lowp vec4 wallcol = texture2D(r,uv);
-            lowp vec4 c2 = texture2D(q,vec2(x,y));
-            gl_FragColor = mix(vec4(wallcol.xyz * y*y, wallcol.a*y*y),c2,c2.a);
+            gl_FragColor = vec4(wallcol.xyz * y*y, y*y);
         }"
 }

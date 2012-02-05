@@ -68,7 +68,7 @@ int main(int argc, char ** argv)
     app.setOverrideCursor( QCursor( Qt::BlankCursor ) );
     //window->showFullScreen();
     //window->showMaximized();
-    window->show();
+    window->showMaximized();
     window->setVisible(true);
 
     exitCode = app.exec();

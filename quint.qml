@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 import QtQuick 2.0
+import QtMultimedia 5.0
 
 Rectangle {
     // Default window size, can be resized by user or fullscreening
@@ -42,8 +43,31 @@ Rectangle {
             interval: 1000
             running: true
             onTriggered: {
-                var newItem = Qt.createQmlObject("import QtQuick 2.0\n"+tester.program,tester, "testee");
+                var newItem;
+                try {
+                    newItem = Qt.createQmlObject("import QtQuick 2.0\n"+tester.program,tester, "testee");
+                }
+
+                catch (err) {
+                    var lines = err.qmlErrors[0].lineNumber-2;
+                    var col = err.qmlErrors[0].columnNumber;
+                    var skip=0;
+                    var i=0;
+                    for (i=0;i<tester.program.length;i++) {
+                        if (tester.program[i]=="\n") { skip++; lines--; }
+                        if (lines==0) col--;
+                        if (col==0) break;
+                    }
+                    i += skip;
+                    // Highlight from i to i+1
+                    //editor.selectionStart = i;
+                    //editor.selectionStart = i+1;
+                    error.text = err.qmlErrors[0].lineNumber+":"+err.qmlErrors[0].message;
+                    //editor.select(i,i+1);
+                }
+
                 if (newItem) {
+                    error.text = "";
                     newItem.anchors.fill = tester;
                     if (tester.item) {
                         tester.item.destroy();
@@ -71,14 +95,32 @@ Rectangle {
         ShaderEffectSource {
             id: qtlogo
             smooth: true
-            sourceItem: Image { source:"qt.png"; smooth: true; }
+            sourceItem: Image { source:"qt-logo.png"; smooth: true; }
             wrapMode: ShaderEffectSource.Repeat
             //mipmap: true
         }
+        MediaPlayer {
+            id: mp
+            source: "big_buck_bunny_720p_surround.avi"
+            playing: false
+            Component.onCompleted: {
+                playTimer.start();
+            }
+        }
+        Timer {
+            id: playTimer
+            interval: 5000
+            running: true
+            onTriggered: {
+                mp.playing = true;
+            }
+        }
+        VideoOutput { id:videooutput; source: mp; anchors.fill: parent; visible: false}
         property real time
         NumberAnimation on time { from:0;to:100;duration:100000;loops:Animation.Infinite;running:true}
     }
     // Quit button
+
     Rectangle {
         anchors.right: parent.right
         anchors.top: parent.top
@@ -96,6 +138,7 @@ Rectangle {
             onClicked: Qt.quit()
         }
     }
+
     // Here's the code editor
     Rectangle {
         id: editorParent
@@ -126,6 +169,8 @@ Rectangle {
                 editor.text = codemodel.list[3];
             } else if (event.key == Qt.Key_F8) {
                 editor.text = codemodel.list[4];
+            } else if (event.key == Qt.Key_F9) {
+                editor.text = codemodel.list[5];
             }
 
             //console.log(event.key,event.modifiers);
@@ -161,6 +206,7 @@ Rectangle {
                     text = before+s+after;
                 }
 
+                height: editorParent.height
                 color: "white"
                 property real fontScale: 1.0
                 font.pointSize: 25*fontScale
@@ -180,12 +226,23 @@ Rectangle {
                         {
                             highp float xfunc = smoothstep(0.0,0.1,qt_TexCoord0.x)*smoothstep(1.0,0.1,qt_TexCoord0.x);
                             highp float yfunc = smoothstep(0.0,0.2,qt_TexCoord0.y)*smoothstep(1.0,0.8,qt_TexCoord0.y);
-                            gl_FragColor = vec4(0.0,1.0,0.0,1.0)*xfunc*yfunc*qt_Opacity;
+                            gl_FragColor = vec4(1.0,1.0,0.0,1.0)*xfunc*yfunc*qt_Opacity;
                         }"
                 }
             }
         }
     }
+
+    // Box for code errors
+    Text {
+        id: error
+        width: editorParent.width
+        anchors.top: editorParent.bottom
+        font.pointSize: 25*editor.fontScale
+        text: ""
+        color: "red"
+    }
+
     ShaderEffect {
         // This is the mouse cursor
         // Needed on Raspberry Pi when you have no desktop environment
