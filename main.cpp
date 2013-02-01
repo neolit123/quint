@@ -28,7 +28,6 @@ SOFTWARE.
 #include <QtDeclarative/qdeclarativeengine.h>
 #include <QtDeclarative/qdeclarativecomponent.h>
 #include <QtCore/qdir.h>
-#include <QtDeclarative/qdeclarativecontext.h>
 
 #include <QGuiApplication>
 #include <QtGui/QCursor>
@@ -38,12 +37,12 @@ SOFTWARE.
 #include "codemodel.h"
 
 #include "quintview.h"
-
 int main(int argc, char ** argv)
 {
     QGuiApplication app(argc, argv);
     QWindow *window = 0;
-    QDeclarativeEngine *engine = 0;
+    // QDeclarativeEngine *engine = 0;
+    // QQmlEngine *engine = 0;
     CodeModel *model = 0;
     model = new CodeModel();
 
@@ -54,16 +53,16 @@ int main(int argc, char ** argv)
     //qputenv("QML_FIXED_ANIMATION_STEP",QByteArray("1"));
 
     QQuickView *qxView = new QuintView();
-    engine = qxView->engine();
+    // engine = qxView->engine();
     window = qxView;
     qxView->rootContext()->setContextProperty("codemodel",model);
     qxView->rootContext()->setContextProperty("view",qxView);
     qxView->setSource(QUrl::fromLocalFile("quint.qml"));
 
-    QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
+    // QObject::connect(engine, SIGNAL(quit()), QCoreApplication::instance(), SLOT(quit()));
 
     //window->setWindowFlags(Qt::Window | Qt::WindowSystemMenuHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint);
-    window->setWindowFlags(Qt::Window);
+    window->setFlags(Qt::Window);
     //window->setMouseGrabEnabled(true);
     app.setOverrideCursor( QCursor( Qt::BlankCursor ) );
     //window->showFullScreen();

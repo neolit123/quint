@@ -30,7 +30,8 @@ SOFTWARE.
    #include <qsgview.h>
    #define QQuickView QSGView
 #else
-   #include <QtQuick/qquickitem.h>
+   // #include <QtQuick/qquickitem.h>
+   #include <QQmlContext>
    #include <QtQuick/qquickview.h>
 #endif
 

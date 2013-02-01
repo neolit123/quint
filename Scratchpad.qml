@@ -1,5 +1,5 @@
 // Welcome to quint
-// A livecoding environemt for QML and OpenGL shaders 
+// A livecoding environemt for QML and OpenGL shaders
 
 // Press:
 // F1 to toggle hiding this editor overlay
@@ -8,7 +8,7 @@
 // Escape or top right icon to exit
 
 Rectangle {
-    property real time: parent.time	
+    property real time: parent.time
 	color: "black"
 	Text {
 		x: 100+100*Math.sin(parent.time)

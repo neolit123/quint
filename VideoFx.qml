@@ -94,11 +94,11 @@ Item {
 			vec2 a2 = vec2(a.x+time*.2,a.y+.5);
 			float d = length(a);
 			vec2 tc = mod(a2,1.);
-			lowp vec4 vc = texture2D(v,tc)*(1.-d*.2); 
+			lowp vec4 vc = texture2D(v,tc)*(1.-d*.2);
 			gl_FragColor = vec4(vc.rgb,1.0);
 		}"
 	}
-	DropShadow { 
+	DropShadow {
 		visible: true
 		anchors.fill:qt
 		source: qt

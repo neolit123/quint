@@ -102,7 +102,7 @@ Rectangle {
         MediaPlayer {
             id: mp
             source: "big_buck_bunny_720p_surround.avi"
-            playing: false
+            // playing: false
             Component.onCompleted: {
                 playTimer.start();
             }
@@ -117,7 +117,7 @@ Rectangle {
         }
         VideoOutput { id:videooutput; source: mp; anchors.fill: parent; visible: false}
         property real time
-        NumberAnimation on time { from:0;to:100;duration:100000;loops:Animation.Infinite;running:true}
+        NumberAnimation on time {from: 0; to: Math.PI * 2; duration: 5000; loops:Animation.Infinite; running:true}
     }
     // Quit button
 
@@ -173,7 +173,7 @@ Rectangle {
                 editor.text = codemodel.list[5];
             }
 
-            //console.log(event.key,event.modifiers);
+            // console.log(event.key,event.modifiers);
         }
 
         Flickable {
@@ -214,7 +214,7 @@ Rectangle {
                 Behavior on fontScale { NumberAnimation { duration: 500; easing.type: Easing.InOutQuint } }
                 cursorVisible: true
                 focus: true
-                activeFocusOnPress: false
+                activeFocusOnPress: true
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
                 cursorDelegate: ShaderEffect {
                     width: 10

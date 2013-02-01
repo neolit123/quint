@@ -6,7 +6,7 @@ ShaderEffect {
         varying highp vec2 qt_TexCoord0;
         uniform sampler2D r;
         uniform sampler2D q;
-        uniform float time;
+        uniform highp float time;
         void main(void)
         {
             highp vec2 scale = vec2(16.0/9.0,1.0);
